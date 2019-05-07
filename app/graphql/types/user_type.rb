@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+class Types::UserInputType < GraphQL::Schema::InputObject
+  graphql_name 'UserInputType'
+  description 'All the attributes for creating an User'
+
+  argument :first_name, String, required: false, camelize: false
+  argument :last_name, String, required: false, camelize: false
+  argument :street, String, required: false
+  argument :number, Int, required: false
+  argument :city, String, required: false
+  argument :postcode, Int, required: false
+  argument :country, String, required: false
+end
+
 class Types::UserType < Types::BaseObject
   description 'An User'
 
@@ -23,10 +36,8 @@ class Types::UserType < Types::BaseObject
   field :adress, String, null: true
 
   def address
-    ([:street, :number, :postcode, :country].map do |a|
+    (%i[street number postcode country].map do |a|
       object.send(a)&.strip
     end.compact - ['']).join(', ')
   end
-
-
 end

@@ -40,4 +40,10 @@ class Types::UserType < Types::BaseObject
       object.send(a)&.strip
     end.compact - ['']).join(', ')
   end
+
+  filed :errors, [Types::ErrorType], null: true
+
+  def errors
+    object.errors.map { |e| { field_name: e, errors: object.errors[e] } }
+  end
 end
